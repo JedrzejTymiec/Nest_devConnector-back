@@ -12,10 +12,10 @@ export class AuthService {
     @InjectModel('User') private readonly userModel: Model<User>,
   ) {}
 
-  async validateUser(email: string, pass: string): Promise<any> {
+  async validateUser({ email, password }): Promise<any> {
     const user = await this.userModel.find({ email });
     if (user.length > 0) {
-      const match = await bcrypt.compare(pass, user[0].password);
+      const match = await bcrypt.compare(password, user[0].password);
       if (match) {
         const payload = { user: { id: user[0]._id } };
         return { token: this.jwtService.sign(payload) };
