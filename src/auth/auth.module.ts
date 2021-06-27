@@ -8,7 +8,7 @@ import { UserSchema } from 'src/schemas/user.schema';
 import { AuthController } from './auth.controller';
 import * as dotenv from 'dotenv';
 
-dotenv.config()
+dotenv.config();
 
 @Module({
   imports: [

@@ -24,4 +24,8 @@ export class AuthService {
     }
     throw new UnauthorizedException('Invalid Credentials');
   }
+
+  async getCurrentlyLogged(id: string): Promise<User> {
+    return await this.userModel.findById(id).select('-password');
+  }
 }
