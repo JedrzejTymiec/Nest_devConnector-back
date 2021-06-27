@@ -15,7 +15,7 @@ export class ProfileDataDto {
   readonly githubusername: string;
 
   @IsNotEmpty()
-  readonly skills: [string];
+  readonly skills: string;
 
   readonly youtube: string;
 
