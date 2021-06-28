@@ -5,6 +5,7 @@ import {
   UseGuards,
   Request,
   Get,
+  Delete,
 } from '@nestjs/common';
 import { ProfileService } from './profile.service';
 import { ProfileDataDto } from 'src/dto/profileData.dto';
@@ -33,5 +34,11 @@ export class ProfileController {
   @Get()
   async allProfiles(): Promise<Profile[]> {
     return this.profileService.getAllProfiles();
+  }
+
+  @UseGuards(AuthGuard('jwt'))
+  @Delete()
+  async deleteProfile(@Request() req): Promise<any> {
+    return this.profileService.deleteProfileUserPosts(req.user.id);
   }
 }

@@ -1,5 +1,5 @@
 import { Document, PopulatedDoc } from 'mongoose';
-import { User } from './users.interface'
+import { User } from './users.interface';
 
 export interface Profile {
   user: PopulatedDoc<User & Document>;
