@@ -70,4 +70,12 @@ export class ProfileService {
     profile.experience.unshift(data);
     return await profile.save();
   }
+
+  async getUserById(id): Promise<Profile> {
+    const profile = await this.profileModel.findOne({ user: id }).populate('user', ['name', 'avatar']);
+    if (!profile) {
+      throw new BadRequestException('Profile not found')
+    }
+    return profile
+  }
 }
