@@ -61,4 +61,13 @@ export class ProfileService {
     await this.userModel.findByIdAndRemove(id);
     return { msg: 'User deleted' };
   }
+
+  async addNewExperience(id, data): Promise<Profile> {
+    const profile = await this.profileModel.findOne({ user: id });
+    if (!profile) {
+      throw new BadRequestException('No profile to add experience');
+    }
+    profile.experience.unshift(data);
+    return await profile.save();
+  }
 }
