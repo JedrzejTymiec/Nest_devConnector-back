@@ -1,7 +1,8 @@
-import { ObjectId } from 'mongoose';
+import { Document, PopulatedDoc } from 'mongoose';
+import { User } from './users.interface'
 
 export interface Profile {
-  user: ObjectId;
+  user: PopulatedDoc<User & Document>;
   company: string;
   website: string;
   location: string;

@@ -30,5 +30,7 @@ module.exports = {
     '@typescript-eslint/object-curly-spacing': ['error', 'always'],
     'default-param-last': 1,
     'function-paren-newline': 1,
+    'object-curly-newline': 1,
+    'max-len': [1, { code: 80, tabWidth: 2 }],
   },
 };
