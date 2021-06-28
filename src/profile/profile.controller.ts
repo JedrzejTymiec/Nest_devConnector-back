@@ -6,7 +6,7 @@ import {
   Request,
   Get,
   Delete,
-  Param
+  Param,
 } from '@nestjs/common';
 import { ProfileService } from './profile.service';
 import { ProfileDataDto } from 'src/dto/profileData.dto';
@@ -56,5 +56,14 @@ export class ProfileController {
   @Get('user/:user_id')
   async getUser(@Param('user_id') id: string): Promise<Profile> {
     return this.profileService.getUserById(id);
+  }
+
+  @UseGuards(AuthGuard('jwt'))
+  @Delete('experience/:exp_id')
+  async deleteExperience(
+    @Param('exp_id') id: string,
+    @Request() req,
+  ): Promise<Profile> {
+    return this.profileService.deleteExperienceById(id, req.user.id);
   }
 }

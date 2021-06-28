@@ -72,10 +72,33 @@ export class ProfileService {
   }
 
   async getUserById(id): Promise<Profile> {
-    const profile = await this.profileModel.findOne({ user: id }).populate('user', ['name', 'avatar']);
+    const profile = await this.profileModel
+      .findOne({ user: id })
+      .populate('user', ['name', 'avatar']);
     if (!profile) {
-      throw new BadRequestException('Profile not found')
+      throw new BadRequestException('Profile not found');
     }
-    return profile
+    return profile;
+  }
+
+  async deleteExperienceById(expId, userId): Promise<Profile> {
+    const profile = await this.profileModel.findOne({ user: userId });
+    if (!profile) {
+      throw new BadRequestException('Profile not found');
+    }
+    if (profile.experience.length !== 1) {
+      const removeIndex = profile.experience
+        .map((item) => item.id)
+        .indexOf(expId);
+      if (!removeIndex) {
+        throw new BadRequestException('Experience not found');
+      }
+      profile.experience.splice(removeIndex, 1);
+    } else if (profile.experience[0].id === expId) {
+      profile.experience.splice(0, 1);
+    } else {
+      throw new BadRequestException('Profile not found');
+    }
+    return await profile.save();
   }
 }
