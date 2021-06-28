@@ -29,4 +29,9 @@ export class ProfileController {
   async currentProfile(@Request() req): Promise<Profile> {
     return this.profileService.getLoggedProfile(req.user.id);
   }
+
+  @Get()
+  async allProfiles(): Promise<Profile[]> {
+    return this.profileService.getAllProfiles();
+  }
 }

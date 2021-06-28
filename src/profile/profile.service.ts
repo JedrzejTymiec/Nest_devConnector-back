@@ -44,4 +44,8 @@ export class ProfileService {
     }
     return profile;
   }
+
+  async getAllProfiles(): Promise<Profile[]> {
+    return await this.profileModel.find().populate('user', ['name', 'avatar']);
+  }
 }
