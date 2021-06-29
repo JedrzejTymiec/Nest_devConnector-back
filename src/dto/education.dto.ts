@@ -1,13 +1,14 @@
 import { IsNotEmpty } from 'class-validator';
 
-export class ExperienceDto {
+export class EducationDto {
   @IsNotEmpty()
-  readonly title: string;
+  readonly school: string;
 
   @IsNotEmpty()
-  readonly company: string;
+  readonly degree: string;
 
-  readonly location: string;
+  @IsNotEmpty()
+  readonly fieldofstudy: string;
 
   @IsNotEmpty()
   readonly from: Date;

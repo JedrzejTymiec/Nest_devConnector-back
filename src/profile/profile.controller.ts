@@ -14,6 +14,7 @@ import { ProfileDataDto } from 'src/dto/profileData.dto';
 import { AuthGuard } from '@nestjs/passport';
 import { Profile } from 'src/interfaces/profile.interface';
 import { ExperienceDto } from 'src/dto/experience.dto';
+import { EducationDto } from 'src/dto/education.dto';
 
 @Controller('profile')
 export class ProfileController {
@@ -76,5 +77,33 @@ export class ProfileController {
     @Param('exp_id') id: string,
   ): Promise<any> {
     return this.profileService.updateExperienceById(req.user.id, id, expDto);
+  }
+
+  @UseGuards(AuthGuard('jwt'))
+  @Post('education')
+  async addEducation(
+    @Body() eduDto: EducationDto,
+    @Request() req,
+  ): Promise<Profile> {
+    return this.profileService.addNewEducation(req.user.id, eduDto);
+  }
+
+  @UseGuards(AuthGuard('jwt'))
+  @Delete('education/:edu_id')
+  async deleteEducation(
+    @Param('edu_id') id: string,
+    @Request() req,
+  ): Promise<Profile> {
+    return this.profileService.deleteEducationById(id, req.user.id);
+  }
+
+  @UseGuards(AuthGuard('jwt'))
+  @Put('education/:edu_id')
+  async updateEducation(
+    @Body() eduDto: EducationDto,
+    @Request() req,
+    @Param('edu_id') id: string,
+  ): Promise<any> {
+    return this.profileService.updateEducationById(req.user.id, id, eduDto);
   }
 }

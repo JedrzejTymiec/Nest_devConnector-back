@@ -51,6 +51,16 @@ export class ProfileService {
     return profile;
   }
 
+  async getUserById(id): Promise<Profile> {
+    const profile = await this.profileModel
+      .findOne({ user: id })
+      .populate('user', ['name', 'avatar']);
+    if (!profile) {
+      throw new BadRequestException('Profile not found');
+    }
+    return profile;
+  }
+
   async getAllProfiles(): Promise<Profile[]> {
     return await this.profileModel.find().populate('user', ['name', 'avatar']);
   }
@@ -71,16 +81,6 @@ export class ProfileService {
     return await profile.save();
   }
 
-  async getUserById(id): Promise<Profile> {
-    const profile = await this.profileModel
-      .findOne({ user: id })
-      .populate('user', ['name', 'avatar']);
-    if (!profile) {
-      throw new BadRequestException('Profile not found');
-    }
-    return profile;
-  }
-
   async deleteExperienceById(expId, userId): Promise<Profile> {
     const profile = await this.profileModel.findOne({ user: userId });
     if (!profile) {
@@ -98,6 +98,35 @@ export class ProfileService {
     const expToUpd = profile.experience.find((item) => item.id === expId);
     const index = profile.experience.indexOf(expToUpd);
     profile.experience[index] = data;
+    return profile.save();
+  }
+
+  async addNewEducation(id, data): Promise<Profile> {
+    const profile = await this.profileModel.findOne({ user: id });
+    if (!profile) {
+      throw new BadRequestException('No profile to add experience');
+    }
+    profile.education.unshift(data);
+    return await profile.save();
+  }
+
+  async deleteEducationById(eduId, userId): Promise<Profile> {
+    const profile = await this.profileModel.findOne({ user: userId });
+    if (!profile) {
+      throw new BadRequestException('Profile not found');
+    }
+    profile.education = profile.education.filter((item) => item.id !== eduId);
+    return await profile.save();
+  }
+
+  async updateEducationById(userId, eduId, data) {
+    const profile = await this.profileModel.findOne({ user: userId });
+    if (!profile) {
+      throw new BadRequestException('Profile not found');
+    }
+    const eduToUpd = profile.education.find((item) => item.id === eduId);
+    const index = profile.education.indexOf(eduToUpd);
+    profile.education[index] = data;
     return profile.save();
   }
 }
