@@ -7,6 +7,7 @@ import {
   Get,
   Delete,
   Param,
+  Put,
 } from '@nestjs/common';
 import { ProfileService } from './profile.service';
 import { ProfileDataDto } from 'src/dto/profileData.dto';
@@ -33,6 +34,11 @@ export class ProfileController {
     return this.profileService.getLoggedProfile(req.user.id);
   }
 
+  @Get('user/:user_id')
+  async getUser(@Param('user_id') id: string): Promise<Profile> {
+    return this.profileService.getUserById(id);
+  }
+
   @Get()
   async allProfiles(): Promise<Profile[]> {
     return this.profileService.getAllProfiles();
@@ -53,11 +59,6 @@ export class ProfileController {
     return this.profileService.addNewExperience(req.user.id, expDto);
   }
 
-  @Get('user/:user_id')
-  async getUser(@Param('user_id') id: string): Promise<Profile> {
-    return this.profileService.getUserById(id);
-  }
-
   @UseGuards(AuthGuard('jwt'))
   @Delete('experience/:exp_id')
   async deleteExperience(
@@ -65,5 +66,15 @@ export class ProfileController {
     @Request() req,
   ): Promise<Profile> {
     return this.profileService.deleteExperienceById(id, req.user.id);
+  }
+
+  @UseGuards(AuthGuard('jwt'))
+  @Put('experience/:exp_id')
+  async updateExperience(
+    @Body() expDto: ExperienceDto,
+    @Request() req,
+    @Param('exp_id') id: string,
+  ): Promise<any> {
+    return this.profileService.updateExperienceById(req.user.id, id, expDto);
   }
 }

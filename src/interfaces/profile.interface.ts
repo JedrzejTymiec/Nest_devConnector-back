@@ -10,8 +10,8 @@ export interface Profile {
   skills: [string];
   bio: string;
   githubusername: string;
-  experience: [{ [key: string]: experience }];
-  education: [{ [key: string]: education }];
+  experience: { [key: string]: experience }[];
+  education: { [key: string]: education }[];
   social: { [key: string]: social };
   date: Date;
 }

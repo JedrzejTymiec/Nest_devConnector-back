@@ -86,19 +86,18 @@ export class ProfileService {
     if (!profile) {
       throw new BadRequestException('Profile not found');
     }
-    if (profile.experience.length !== 1) {
-      const removeIndex = profile.experience
-        .map((item) => item.id)
-        .indexOf(expId);
-      if (!removeIndex) {
-        throw new BadRequestException('Experience not found');
-      }
-      profile.experience.splice(removeIndex, 1);
-    } else if (profile.experience[0].id === expId) {
-      profile.experience.splice(0, 1);
-    } else {
+    profile.experience = profile.experience.filter((item) => item.id !== expId);
+    return await profile.save();
+  }
+
+  async updateExperienceById(userId, expId, data) {
+    const profile = await this.profileModel.findOne({ user: userId });
+    if (!profile) {
       throw new BadRequestException('Profile not found');
     }
-    return await profile.save();
+    const expToUpd = profile.experience.find((item) => item.id === expId);
+    const index = profile.experience.indexOf(expToUpd);
+    profile.experience[index] = data;
+    return profile.save();
   }
 }
