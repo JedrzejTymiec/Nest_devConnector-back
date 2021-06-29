@@ -1,10 +1,13 @@
-import { Injectable, BadRequestException } from '@nestjs/common';
+import { Injectable, BadRequestException, HttpService } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
 import { Profile } from '../interfaces/profile.interface';
 import { User } from '../interfaces/users.interface';
 import { social } from '../interfaces/profile.interface';
 import { Post } from 'src/interfaces/post.interfae';
+import * as dotenv from 'dotenv';
+
+dotenv.config();
 
 @Injectable()
 export class ProfileService {
@@ -12,6 +15,7 @@ export class ProfileService {
     @InjectModel('Profile') private readonly profileModel: Model<Profile>,
     @InjectModel('User') private readonly userModel: Model<User>,
     @InjectModel('Post') private readonly postModel: Model<Post>,
+    private readonly httpService: HttpService,
   ) {}
 
   async createUpdateProfile(id, data): Promise<Profile> {
@@ -128,5 +132,12 @@ export class ProfileService {
     const index = profile.education.indexOf(eduToUpd);
     profile.education[index] = data;
     return profile.save();
+  }
+
+  async getGithubReposByUsername(username): Promise<any> {
+    const response = await this.httpService
+      .get(`https://api.github.com/users/${username}/repos?per_page=5&sort=created:asc&client_id=${process.env.GITHUB_ID}&client_secret=${process.env.GITHUB_SECRET}`)
+      .toPromise();
+    return response.data;
   }
 }

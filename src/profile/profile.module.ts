@@ -1,4 +1,4 @@
-import { Module } from '@nestjs/common';
+import { Module, HttpModule } from '@nestjs/common';
 import { ProfileController } from './profile.controller';
 import { ProfileService } from './profile.service';
 import { MongooseModule } from '@nestjs/mongoose';
@@ -11,6 +11,7 @@ import { PostSchema } from 'src/schemas/post.schema';
     MongooseModule.forFeature([{ name: 'Profile', schema: ProfileSchema }]),
     MongooseModule.forFeature([{ name: 'User', schema: UserSchema }]),
     MongooseModule.forFeature([{ name: 'Post', schema: PostSchema }]),
+    HttpModule,
   ],
   controllers: [ProfileController],
   providers: [ProfileService],

@@ -106,4 +106,9 @@ export class ProfileController {
   ): Promise<any> {
     return this.profileService.updateEducationById(req.user.id, id, eduDto);
   }
+
+  @Get('github/:username')
+  async githubRepos(@Param('username') username): Promise<any> {
+    return this.profileService.getGithubReposByUsername(username);
+  }
 }
