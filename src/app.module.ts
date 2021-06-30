@@ -3,6 +3,7 @@ import { AuthModule } from './auth/auth.module';
 import { MongooseModule } from '@nestjs/mongoose';
 import { UsersModule } from './users/users.module';
 import { ProfileModule } from './profile/profile.module';
+import { PostsModule } from './posts/posts.module';
 import * as dotenv from 'dotenv';
 
 dotenv.config();
@@ -13,6 +14,7 @@ dotenv.config();
     AuthModule,
     UsersModule,
     ProfileModule,
+    PostsModule,
   ],
   controllers: [],
   providers: [],

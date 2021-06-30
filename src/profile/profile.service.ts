@@ -1,10 +1,10 @@
 import { Injectable, BadRequestException, HttpService } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
-import { Profile } from '../interfaces/profile.interface';
-import { User } from '../interfaces/users.interface';
-import { social } from '../interfaces/profile.interface';
-import { Post } from 'src/interfaces/post.interfae';
+import { ProfileInterface } from '../interfaces/profile.interface';
+import { UserInterface } from '../interfaces/users.interface';
+import { SocialInterface } from '../interfaces/profile.interface';
+import { PostInterface } from 'src/interfaces/post.interface';
 import * as dotenv from 'dotenv';
 
 dotenv.config();
@@ -12,16 +12,17 @@ dotenv.config();
 @Injectable()
 export class ProfileService {
   constructor(
-    @InjectModel('Profile') private readonly profileModel: Model<Profile>,
-    @InjectModel('User') private readonly userModel: Model<User>,
-    @InjectModel('Post') private readonly postModel: Model<Post>,
+    @InjectModel('Profile')
+    private readonly profileModel: Model<ProfileInterface>,
+    @InjectModel('User') private readonly userModel: Model<UserInterface>,
+    @InjectModel('Post') private readonly postModel: Model<PostInterface>,
     private readonly httpService: HttpService,
   ) {}
 
-  async createUpdateProfile(id, data): Promise<Profile> {
+  async createUpdateProfile(id, data): Promise<ProfileInterface> {
     const { youtube, facebook, twitter, instagram, linkedin, ...rest } = data;
 
-    const socialData: social = {};
+    const socialData: SocialInterface = {};
     if (youtube) socialData.youtube = youtube;
     if (facebook) socialData.facebook = facebook;
     if (twitter) socialData.twitter = twitter;
@@ -45,7 +46,7 @@ export class ProfileService {
     return await checkProfile.save();
   }
 
-  async getLoggedProfile(id): Promise<Profile> {
+  async getLoggedProfile(id): Promise<ProfileInterface> {
     const profile = await this.profileModel
       .findOne({ user: id })
       .populate('user', ['name', 'avatar']);
@@ -55,7 +56,7 @@ export class ProfileService {
     return profile;
   }
 
-  async getUserById(id): Promise<Profile> {
+  async getUserById(id): Promise<ProfileInterface> {
     const profile = await this.profileModel
       .findOne({ user: id })
       .populate('user', ['name', 'avatar']);
@@ -65,7 +66,7 @@ export class ProfileService {
     return profile;
   }
 
-  async getAllProfiles(): Promise<Profile[]> {
+  async getAllProfiles(): Promise<ProfileInterface[]> {
     return await this.profileModel.find().populate('user', ['name', 'avatar']);
   }
 
@@ -76,7 +77,7 @@ export class ProfileService {
     return { msg: 'User deleted' };
   }
 
-  async addNewExperience(id, data): Promise<Profile> {
+  async addNewExperience(id, data): Promise<ProfileInterface> {
     const profile = await this.profileModel.findOne({ user: id });
     if (!profile) {
       throw new BadRequestException('No profile to add experience');
@@ -85,7 +86,7 @@ export class ProfileService {
     return await profile.save();
   }
 
-  async deleteExperienceById(expId, userId): Promise<Profile> {
+  async deleteExperienceById(expId, userId): Promise<ProfileInterface> {
     const profile = await this.profileModel.findOne({ user: userId });
     if (!profile) {
       throw new BadRequestException('Profile not found');
@@ -105,7 +106,7 @@ export class ProfileService {
     return profile.save();
   }
 
-  async addNewEducation(id, data): Promise<Profile> {
+  async addNewEducation(id, data): Promise<ProfileInterface> {
     const profile = await this.profileModel.findOne({ user: id });
     if (!profile) {
       throw new BadRequestException('No profile to add experience');
@@ -114,7 +115,7 @@ export class ProfileService {
     return await profile.save();
   }
 
-  async deleteEducationById(eduId, userId): Promise<Profile> {
+  async deleteEducationById(eduId, userId): Promise<ProfileInterface> {
     const profile = await this.profileModel.findOne({ user: userId });
     if (!profile) {
       throw new BadRequestException('Profile not found');
@@ -136,7 +137,7 @@ export class ProfileService {
 
   async getGithubReposByUsername(username): Promise<any> {
     const response = await this.httpService
-      .get(`https://api.github.com/users/${username}/repos?per_page=5&sort=created:asc&client_id=${process.env.GITHUB_ID}&client_secret=${process.env.GITHUB_SECRET}`)
+      .get(`https://api.github.com/users/${username}/repos?per_page=5&sort=created:asc&client_id=${process.env.GITHUB_ID}&client_secret=${process.env.GITHUB_SECRET}`,)
       .toPromise();
     return response.data;
   }

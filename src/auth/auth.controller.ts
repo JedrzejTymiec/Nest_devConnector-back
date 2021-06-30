@@ -8,7 +8,7 @@ import {
 } from '@nestjs/common';
 import { AuthService } from './auth.service';
 import { AuthGuard } from '@nestjs/passport';
-import { User } from 'src/interfaces/users.interface';
+import { UserInterface } from 'src/interfaces/users.interface';
 import { LoginDto } from '../dto/login.dto';
 
 @Controller('auth')
@@ -22,7 +22,7 @@ export class AuthController {
 
   @UseGuards(AuthGuard('jwt'))
   @Get()
-  async currentlyLogged(@Request() req): Promise<User> {
+  async currentlyLogged(@Request() req): Promise<UserInterface> {
     return this.authService.getCurrentlyLogged(req.user.id);
   }
 }

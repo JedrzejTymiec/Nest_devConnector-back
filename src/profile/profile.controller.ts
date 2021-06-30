@@ -12,7 +12,7 @@ import {
 import { ProfileService } from './profile.service';
 import { ProfileDataDto } from 'src/dto/profileData.dto';
 import { AuthGuard } from '@nestjs/passport';
-import { Profile } from 'src/interfaces/profile.interface';
+import { ProfileInterface } from 'src/interfaces/profile.interface';
 import { ExperienceDto } from 'src/dto/experience.dto';
 import { EducationDto } from 'src/dto/education.dto';
 
@@ -25,23 +25,23 @@ export class ProfileController {
   async createUpdate(
     @Body() profileDto: ProfileDataDto,
     @Request() req,
-  ): Promise<Profile> {
+  ): Promise<ProfileInterface> {
     return this.profileService.createUpdateProfile(req.user.id, profileDto);
   }
 
   @UseGuards(AuthGuard('jwt'))
   @Get('me')
-  async currentProfile(@Request() req): Promise<Profile> {
+  async currentProfile(@Request() req): Promise<ProfileInterface> {
     return this.profileService.getLoggedProfile(req.user.id);
   }
 
   @Get('user/:user_id')
-  async getUser(@Param('user_id') id: string): Promise<Profile> {
+  async getUser(@Param('user_id') id: string): Promise<ProfileInterface> {
     return this.profileService.getUserById(id);
   }
 
   @Get()
-  async allProfiles(): Promise<Profile[]> {
+  async allProfiles(): Promise<ProfileInterface[]> {
     return this.profileService.getAllProfiles();
   }
 
@@ -56,7 +56,7 @@ export class ProfileController {
   async addExperience(
     @Body() expDto: ExperienceDto,
     @Request() req,
-  ): Promise<Profile> {
+  ): Promise<ProfileInterface> {
     return this.profileService.addNewExperience(req.user.id, expDto);
   }
 
@@ -65,7 +65,7 @@ export class ProfileController {
   async deleteExperience(
     @Param('exp_id') id: string,
     @Request() req,
-  ): Promise<Profile> {
+  ): Promise<ProfileInterface> {
     return this.profileService.deleteExperienceById(id, req.user.id);
   }
 
@@ -84,7 +84,7 @@ export class ProfileController {
   async addEducation(
     @Body() eduDto: EducationDto,
     @Request() req,
-  ): Promise<Profile> {
+  ): Promise<ProfileInterface> {
     return this.profileService.addNewEducation(req.user.id, eduDto);
   }
 
@@ -93,7 +93,7 @@ export class ProfileController {
   async deleteEducation(
     @Param('edu_id') id: string,
     @Request() req,
-  ): Promise<Profile> {
+  ): Promise<ProfileInterface> {
     return this.profileService.deleteEducationById(id, req.user.id);
   }
 

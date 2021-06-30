@@ -2,14 +2,14 @@ import { Injectable, UnauthorizedException } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
-import { User } from 'src/interfaces/users.interface';
+import { UserInterface } from 'src/interfaces/users.interface';
 import * as bcrypt from 'bcrypt';
 
 @Injectable()
 export class AuthService {
   constructor(
     private jwtService: JwtService,
-    @InjectModel('User') private readonly userModel: Model<User>,
+    @InjectModel('User') private readonly userModel: Model<UserInterface>,
   ) {}
 
   async validateUser({ email, password }): Promise<any> {
@@ -25,7 +25,7 @@ export class AuthService {
     throw new UnauthorizedException('Invalid Credentials');
   }
 
-  async getCurrentlyLogged(id: string): Promise<User> {
+  async getCurrentlyLogged(id: string): Promise<UserInterface> {
     return await this.userModel.findById(id).select('-password');
   }
 }

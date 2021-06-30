@@ -1,6 +1,6 @@
 import { Injectable, BadRequestException } from '@nestjs/common';
 import { RegisterDto } from 'src/dto/register.dto';
-import { User } from 'src/interfaces/users.interface';
+import { UserInterface } from 'src/interfaces/users.interface';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
 import * as gravatar from 'gravatar';
@@ -10,7 +10,7 @@ import { JwtService } from '@nestjs/jwt';
 @Injectable()
 export class UsersService {
   constructor(
-    @InjectModel('User') private readonly userModel: Model<User>,
+    @InjectModel('User') private readonly userModel: Model<UserInterface>,
     private jwtService: JwtService,
   ) {}
 

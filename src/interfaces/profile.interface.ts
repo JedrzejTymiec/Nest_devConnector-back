@@ -1,8 +1,8 @@
 import { Document, PopulatedDoc } from 'mongoose';
-import { User } from './users.interface';
+import { UserInterface } from './users.interface';
 
-export interface Profile {
-  user: PopulatedDoc<User & Document>;
+export interface ProfileInterface {
+  user: PopulatedDoc<UserInterface & Document>;
   company: string;
   website: string;
   location: string;
@@ -10,13 +10,13 @@ export interface Profile {
   skills: [string];
   bio: string;
   githubusername: string;
-  experience: { [key: string]: experience }[];
-  education: { [key: string]: education }[];
-  social: { [key: string]: social };
+  experience: { [key: string]: ExperienceInterface }[];
+  education: { [key: string]: EducationInterface }[];
+  social: { [key: string]: SocialInterface };
   date: Date;
 }
 
-export interface experience {
+export interface ExperienceInterface {
   title: string;
   company: string;
   location: string;
@@ -26,7 +26,7 @@ export interface experience {
   description: string;
 }
 
-export interface education {
+export interface EducationInterface {
   school: string;
   fieldofstudy: string;
   from: Date;
@@ -35,6 +35,6 @@ export interface education {
   description: string;
 }
 
-export interface social {
+export interface SocialInterface {
   [key: string]: string;
 }
