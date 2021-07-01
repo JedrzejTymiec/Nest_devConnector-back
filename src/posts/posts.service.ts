@@ -1,4 +1,8 @@
-import { Injectable, BadRequestException, UnauthorizedException } from '@nestjs/common';
+import {
+  Injectable,
+  BadRequestException,
+  UnauthorizedException,
+} from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
 import { PostInterface } from 'src/interfaces/post.interface';
@@ -20,26 +24,53 @@ export class PostsService {
   }
 
   async getAllPosts(): Promise<PostInterface[]> {
-      return await this.postModel.find().sort({ date: -1 })
+    return await this.postModel.find().sort({ date: -1 });
   }
 
   async getPostById(id): Promise<PostInterface> {
-      const post = await this.postModel.findById(id)
-      if (!post) {
-          throw new BadRequestException('Post not found')
-      }
-      return post
+    const post = await this.postModel.findById(id);
+    if (!post) {
+      throw new BadRequestException('Post not found');
+    }
+    return post;
   }
 
   async deletePostById(userId, postId): Promise<any> {
-    const post = await this.postModel.findById(postId)
-    if(!post) {
-        throw new BadRequestException('Post not found')
+    const post = await this.postModel.findById(postId);
+    if (!post) {
+      throw new BadRequestException('Post not found');
     }
-    if(post.user != userId) {
-        throw new UnauthorizedException('User not authorized')
+    if (post.user.toString() !== userId) {
+      throw new UnauthorizedException('User not authorized');
     }
-    post.delete()
-    return { msg: 'Post deleted' }
+    post.delete();
+    return { msg: 'Post deleted' };
+  }
+
+  async likePostById(userId, postId): Promise<any> {
+    const post = await this.postModel.findById(postId);
+    if (!post) {
+      throw new BadRequestException('Post not found');
+    }
+    if (post.likes.filter((like) => like.id === userId).length > 0) {
+      throw new BadRequestException('Post already liked');
+    }
+    post.likes.push(userId);
+    post.save();
+    return post.likes;
+  }
+
+  async unlikePostById(userId, postId): Promise<any> {
+    const post = await this.postModel.findById(postId);
+    if (!post) {
+      throw new BadRequestException('Post not found');
+    }
+    if (post.likes.filter((like) => like.id === userId).length === 0) {
+      throw new BadRequestException('Post has not been liked yet');
+    }
+    const index = post.likes.map((like) => like.id).indexOf(userId);
+    post.likes.splice(index, 1);
+    post.save();
+    return post.likes;
   }
 }

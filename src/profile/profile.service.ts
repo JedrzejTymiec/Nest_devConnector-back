@@ -137,7 +137,14 @@ export class ProfileService {
 
   async getGithubReposByUsername(username): Promise<any> {
     const response = await this.httpService
-      .get(`https://api.github.com/users/${username}/repos?per_page=5&sort=created:asc&client_id=${process.env.GITHUB_ID}&client_secret=${process.env.GITHUB_SECRET}`,)
+      .get(`https://api.github.com/users/${username}/repos`, {
+        params: {
+          per_page: 5,
+          sort: 'created:asc',
+          client_id: process.env.GITHUB_ID,
+          client_secret: process.env.GITHUB_SECRET,
+        },
+      })
       .toPromise();
     return response.data;
   }
