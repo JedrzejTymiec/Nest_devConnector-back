@@ -5,9 +5,7 @@ import { ProfileInterface } from '../interfaces/profile.interface';
 import { UserInterface } from '../interfaces/users.interface';
 import { SocialInterface } from '../interfaces/profile.interface';
 import { PostInterface } from 'src/interfaces/post.interface';
-import * as dotenv from 'dotenv';
-
-dotenv.config();
+import { ConfigService } from '@nestjs/config';
 
 @Injectable()
 export class ProfileService {
@@ -17,7 +15,8 @@ export class ProfileService {
     @InjectModel('User') private readonly userModel: Model<UserInterface>,
     @InjectModel('Post') private readonly postModel: Model<PostInterface>,
     private readonly httpService: HttpService,
-  ) {}
+    private readonly cofigService: ConfigService
+  ) { }
 
   async createUpdateProfile(id, data): Promise<ProfileInterface> {
     const { youtube, facebook, twitter, instagram, linkedin, ...rest } = data;
@@ -136,13 +135,15 @@ export class ProfileService {
   }
 
   async getGithubReposByUsername(username): Promise<any> {
+    const githubId = this.cofigService.get('github.id')
+    const githubSecret = this.cofigService.get('github.secret')
     const response = await this.httpService
       .get(`https://api.github.com/users/${username}/repos`, {
         params: {
           per_page: 5,
           sort: 'created:asc',
-          client_id: process.env.GITHUB_ID,
-          client_secret: process.env.GITHUB_SECRET,
+          client_id: githubId,
+          client_secret: githubSecret,
         },
       })
       .toPromise();

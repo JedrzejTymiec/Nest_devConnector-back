@@ -6,16 +6,23 @@ import { JwtModule } from '@nestjs/jwt';
 import { MongooseModule } from '@nestjs/mongoose';
 import { UserSchema } from 'src/schemas/user.schema';
 import { AuthController } from './auth.controller';
-import * as dotenv from 'dotenv';
-
-dotenv.config();
+import { ConfigModule, ConfigService } from '@nestjs/config';
 
 @Module({
   imports: [
+    ConfigModule,
     PassportModule,
-    JwtModule.register({
-      secret: process.env.JWT_SECRET,
-      signOptions: { expiresIn: '1h' },
+    JwtModule.registerAsync({
+      imports: [ConfigModule],
+      useFactory: (configService: ConfigService) => {
+        return {
+          secret: configService.get('jwt.secret'),
+          signOptions: {
+            expiresIn: '3h'
+          }
+        }
+      },
+      inject: [ConfigService]
     }),
     MongooseModule.forFeature([{ name: 'User', schema: UserSchema }]),
   ],
@@ -23,4 +30,4 @@ dotenv.config();
   exports: [AuthService, JwtModule],
   controllers: [AuthController],
 })
-export class AuthModule {}
+export class AuthModule { }

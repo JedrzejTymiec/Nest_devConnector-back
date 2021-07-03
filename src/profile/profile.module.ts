@@ -5,6 +5,7 @@ import { MongooseModule } from '@nestjs/mongoose';
 import { ProfileSchema } from 'src/schemas/profile.schema';
 import { UserSchema } from 'src/schemas/user.schema';
 import { PostSchema } from 'src/schemas/post.schema';
+import { ConfigModule } from '@nestjs/config';
 
 @Module({
   imports: [
@@ -12,8 +13,9 @@ import { PostSchema } from 'src/schemas/post.schema';
     MongooseModule.forFeature([{ name: 'User', schema: UserSchema }]),
     MongooseModule.forFeature([{ name: 'Post', schema: PostSchema }]),
     HttpModule,
+    ConfigModule
   ],
   controllers: [ProfileController],
   providers: [ProfileService],
 })
-export class ProfileModule {}
+export class ProfileModule { }
