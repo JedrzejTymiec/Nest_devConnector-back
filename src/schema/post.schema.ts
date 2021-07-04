@@ -10,7 +10,7 @@ export type PostDocument = Post & Document;
 Schema();
 class Like {
   @Prop({ type: mongoose.Schema.Types.ObjectId, ref: 'User' })
-  user: UserInterface;
+  userId: UserInterface;
 }
 
 const LikeSchema = SchemaFactory.createForClass(Like);
@@ -18,7 +18,7 @@ const LikeSchema = SchemaFactory.createForClass(Like);
 Schema();
 class Comment {
   @Prop({ type: mongoose.Schema.Types.ObjectId, ref: 'User' })
-  user: UserInterface;
+  userId: UserInterface;
 
   @Prop({ required: true })
   text: string;
@@ -38,7 +38,7 @@ const CommentSchema = SchemaFactory.createForClass(Comment);
 @Schema()
 export class Post {
   @Prop({ type: mongoose.Schema.Types.ObjectId, ref: 'User' })
-  user: UserInterface;
+  userId: UserInterface;
 
   @Prop({ required: true })
   text: string;

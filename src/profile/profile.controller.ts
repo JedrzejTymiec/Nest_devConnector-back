@@ -26,13 +26,13 @@ export class ProfileController {
     @Body() profileDto: ProfileDataDto,
     @Request() req,
   ): Promise<ProfileInterface> {
-    return this.profileService.createUpdateProfile(req.user.id, profileDto);
+    return this.profileService.createUpdate(req.user.id, profileDto);
   }
 
   @UseGuards(AuthGuard('jwt'))
   @Get('me')
   async currentProfile(@Request() req): Promise<ProfileInterface> {
-    return this.profileService.getLoggedProfile(req.user.id);
+    return this.profileService.getLogged(req.user.id);
   }
 
   @Get('user/:user_id')
@@ -42,13 +42,13 @@ export class ProfileController {
 
   @Get()
   async allProfiles(): Promise<ProfileInterface[]> {
-    return this.profileService.getAllProfiles();
+    return this.profileService.getAll();
   }
 
   @UseGuards(AuthGuard('jwt'))
   @Delete()
-  async deleteProfile(@Request() req): Promise<any> {
-    return this.profileService.deleteProfileUserPosts(req.user.id);
+  async deleteProfile(@Request() req): Promise<void> {
+    this.profileService.deleteProfileUserPosts(req.user.id);
   }
 
   @UseGuards(AuthGuard('jwt'))

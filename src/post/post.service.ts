@@ -15,19 +15,21 @@ export class PostsService {
     @InjectModel('User') private readonly userModel: Model<UserInterface>,
   ) { }
 
-  async addNewPost(id, data): Promise<PostInterface> {
+  async create(id, data): Promise<PostInterface> {
     const { name, avatar } = await this.userModel
       .findById(id)
       .select('-password');
     const newPost = new this.postModel({ name, avatar, user: id, ...data });
-    return await newPost.save();
+    return newPost.save();
   }
 
-  async getAllPosts(): Promise<PostInterface[]> {
-    return await this.postModel.find().sort({ date: -1 });
+  async getAll(): Promise<PostInterface[]> {
+    return this.postModel
+      .find()
+      .sort({ date: -1 });
   }
 
-  async getPostById(id): Promise<PostInterface> {
+  async getById(id): Promise<PostInterface> {
     const post = await this.postModel.findById(id);
     if (!post) {
       throw new BadRequestException('Post not found');
@@ -35,19 +37,18 @@ export class PostsService {
     return post;
   }
 
-  async deletePostById(userId, postId): Promise<any> {
+  async deleteById(userId, postId): Promise<void> {
     const post = await this.postModel.findById(postId);
     if (!post) {
       throw new BadRequestException('Post not found');
     }
-    if (post.user.toString() !== userId) {
+    if (post.userId.toString() !== userId) {
       throw new UnauthorizedException('User not authorized');
     }
     post.delete();
-    return { msg: 'Post deleted' };
   }
 
-  async likePostById(userId, postId): Promise<any> {
+  async likeById(userId, postId): Promise<any> {
     const post = await this.postModel.findById(postId);
     if (!post) {
       throw new BadRequestException('Post not found');
@@ -60,15 +61,19 @@ export class PostsService {
     return post.likes;
   }
 
-  async unlikePostById(userId, postId): Promise<any> {
+  async unlikeById(userId, postId): Promise<any> {
     const post = await this.postModel.findById(postId);
     if (!post) {
       throw new BadRequestException('Post not found');
     }
-    if (post.likes.filter((like) => like.id === userId).length === 0) {
+    if (post.likes.filter(
+      (like) => like.id === userId
+    ).length === 0) {
       throw new BadRequestException('Post has not been liked yet');
     }
-    const index = post.likes.map((like) => like.id).indexOf(userId);
+    const index = post.likes
+      .map((like) => like.id)
+      .indexOf(userId);
     post.likes.splice(index, 1);
     post.save();
     return post.likes;
@@ -76,7 +81,9 @@ export class PostsService {
 
   async addCommentByPostId(userId, postId, { text }): Promise<any> {
     const post = await this.postModel.findById(postId);
-    const user = await this.userModel.findById(userId).select('-password');
+    const user = await this.userModel
+      .findById(userId)
+      .select('-password');
 
     const newComment = {
       text: text,

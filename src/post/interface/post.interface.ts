@@ -3,7 +3,7 @@ import { UserInterface } from '../../user/interface/users.interface';
 import { LikeInterface } from './like.interface';
 
 export interface PostInterface {
-  user: PopulatedDoc<UserInterface & Document>;
+  userId: PopulatedDoc<UserInterface & Document>;
   text: string;
   name: string;
   avatar: string;

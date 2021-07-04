@@ -26,6 +26,6 @@ export class AuthService {
   }
 
   async getCurrentlyLogged(id: string): Promise<UserInterface> {
-    return await this.userModel.findById(id).select('-password');
+    return this.userModel.findById(id).select('-password');
   }
 }
