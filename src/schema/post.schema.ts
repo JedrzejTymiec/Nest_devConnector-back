@@ -1,9 +1,9 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import * as mongoose from 'mongoose';
 import { Document } from 'mongoose';
-import { UserInterface } from '../interfaces/users.interface';
-import { CommentInterface } from 'src/interfaces/post.interface';
-import { LikeInterface } from 'src/interfaces/post.interface';
+import { UserInterface } from '../user/interface/users.interface';
+import { CommentInterface } from 'src/post/interface/comment.interface';
+import { LikeInterface } from 'src/post/interface/like.interface';
 
 export type PostDocument = Post & Document;
 

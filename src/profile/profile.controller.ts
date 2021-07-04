@@ -10,15 +10,15 @@ import {
   Put,
 } from '@nestjs/common';
 import { ProfileService } from './profile.service';
-import { ProfileDataDto } from 'src/dto/profileData.dto';
+import { ProfileDataDto } from 'src/profile/dto/profileData.dto';
 import { AuthGuard } from '@nestjs/passport';
-import { ProfileInterface } from 'src/interfaces/profile.interface';
-import { ExperienceDto } from 'src/dto/experience.dto';
-import { EducationDto } from 'src/dto/education.dto';
+import { ProfileInterface } from 'src/profile/interface/profile.interface';
+import { ExperienceDto } from 'src/profile/dto/experience.dto';
+import { EducationDto } from 'src/profile/dto/education.dto';
 
 @Controller('profile')
 export class ProfileController {
-  constructor(private profileService: ProfileService) {}
+  constructor(private profileService: ProfileService) { }
 
   @UseGuards(AuthGuard('jwt'))
   @Post()

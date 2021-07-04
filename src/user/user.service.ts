@@ -1,6 +1,6 @@
 import { Injectable, BadRequestException } from '@nestjs/common';
-import { RegisterDto } from 'src/dto/register.dto';
-import { UserInterface } from 'src/interfaces/users.interface';
+import { RegisterDto } from 'src/user/dto/register.dto';
+import { UserInterface } from 'src/user/interface/users.interface';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
 import * as gravatar from 'gravatar';
@@ -12,7 +12,7 @@ export class UsersService {
   constructor(
     @InjectModel('User') private readonly userModel: Model<UserInterface>,
     private jwtService: JwtService,
-  ) {}
+  ) { }
 
   async registerUser(data: RegisterDto): Promise<any> {
     const { name, password } = data;

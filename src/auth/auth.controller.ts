@@ -8,12 +8,12 @@ import {
 } from '@nestjs/common';
 import { AuthService } from './auth.service';
 import { AuthGuard } from '@nestjs/passport';
-import { UserInterface } from 'src/interfaces/users.interface';
-import { LoginDto } from '../dto/login.dto';
+import { UserInterface } from 'src/user/interface/users.interface';
+import { LoginDto } from './dto/login.dto';
 
 @Controller('auth')
 export class AuthController {
-  constructor(private authService: AuthService) {}
+  constructor(private authService: AuthService) { }
 
   @Post('login')
   async login(@Body() loginDto: LoginDto) {

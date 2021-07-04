@@ -9,14 +9,15 @@ import {
   Delete,
   Put,
 } from '@nestjs/common';
-import { PostsService } from './posts.service';
+import { PostsService } from './post.service';
 import { AuthGuard } from '@nestjs/passport';
-import { PostInterface } from 'src/interfaces/post.interface';
-import { PostDto } from 'src/dto/post.dto';
+import { PostInterface } from 'src/post/interface/post.interface';
+import { PostDto } from 'src/post/dto/post.dto';
+import { CommentDto } from 'src/post/dto/comment.dto';
 
 @Controller('posts')
 export class PostsController {
-  constructor(private postsService: PostsService) {}
+  constructor(private postsService: PostsService) { }
 
   @UseGuards(AuthGuard('jwt'))
   @Post()
@@ -55,5 +56,15 @@ export class PostsController {
   @Put('unlike/:post_id')
   async unlikePost(@Request() req, @Param('post_id') id: string): Promise<any> {
     return this.postsService.unlikePostById(req.user.id, id);
+  }
+
+  @UseGuards(AuthGuard('jwt'))
+  @Post('comment/:post_id')
+  async addComment(
+    @Param('post_id') id: string,
+    @Request() req,
+    @Body() commentDto: CommentDto,
+  ): Promise<any> {
+    return this.postsService.addCommentByPostId(req.user.id, id, commentDto);
   }
 }

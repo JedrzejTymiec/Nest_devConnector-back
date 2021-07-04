@@ -1,9 +1,9 @@
 import { Module } from '@nestjs/common';
-import { PostsController } from './posts.controller';
-import { PostsService } from './posts.service';
+import { PostsController } from './post.controller';
+import { PostsService } from './post.service';
 import { MongooseModule } from '@nestjs/mongoose';
-import { PostSchema } from 'src/schemas/post.schema';
-import { UserSchema } from 'src/schemas/user.schema';
+import { PostSchema } from 'src/schema/post.schema';
+import { UserSchema } from 'src/schema/user.schema';
 
 @Module({
   imports: [
@@ -13,4 +13,4 @@ import { UserSchema } from 'src/schemas/user.schema';
   controllers: [PostsController],
   providers: [PostsService],
 })
-export class PostsModule {}
+export class PostsModule { }

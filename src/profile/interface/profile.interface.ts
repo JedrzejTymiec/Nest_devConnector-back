@@ -1,5 +1,8 @@
 import { Document, PopulatedDoc } from 'mongoose';
-import { UserInterface } from './users.interface';
+import { UserInterface } from '../../user/interface/users.interface';
+import { EducationInterface } from './education.interface';
+import { ExperienceInterface } from './experience.interface';
+import { SocialInterface } from './social.interface';
 
 export interface ProfileInterface {
   user: PopulatedDoc<UserInterface & Document>;
@@ -14,27 +17,4 @@ export interface ProfileInterface {
   education: { [key: string]: EducationInterface }[];
   social: { [key: string]: SocialInterface };
   date: Date;
-}
-
-export interface ExperienceInterface {
-  title: string;
-  company: string;
-  location: string;
-  from: Date;
-  to: Date;
-  current: boolean;
-  description: string;
-}
-
-export interface EducationInterface {
-  school: string;
-  fieldofstudy: string;
-  from: Date;
-  to: Date;
-  current: boolean;
-  description: string;
-}
-
-export interface SocialInterface {
-  [key: string]: string;
 }

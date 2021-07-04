@@ -1,10 +1,10 @@
 import { Injectable, BadRequestException, HttpService } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
-import { ProfileInterface } from '../interfaces/profile.interface';
-import { UserInterface } from '../interfaces/users.interface';
-import { SocialInterface } from '../interfaces/profile.interface';
-import { PostInterface } from 'src/interfaces/post.interface';
+import { ProfileInterface } from './interface/profile.interface';
+import { UserInterface } from '../user/interface/users.interface';
+import { SocialInterface } from './interface/social.interface';
+import { PostInterface } from 'src/post/interface/post.interface';
 import { ConfigService } from '@nestjs/config';
 
 @Injectable()

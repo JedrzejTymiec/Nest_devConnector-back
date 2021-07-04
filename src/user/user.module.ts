@@ -1,9 +1,9 @@
 import { Module } from '@nestjs/common';
-import { UsersController } from './users.controller';
-import { UsersService } from './users.service';
+import { UsersController } from './user.controller';
+import { UsersService } from './user.service';
 import { JwtModule } from '@nestjs/jwt';
 import { MongooseModule } from '@nestjs/mongoose';
-import { UserSchema } from 'src/schemas/user.schema';
+import { UserSchema } from 'src/schema/user.schema';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 
 @Module({
