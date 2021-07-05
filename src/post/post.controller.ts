@@ -17,7 +17,7 @@ import { CommentDto } from 'src/post/dto/comment.dto';
 
 @Controller('post')
 export class PostController {
-  constructor(private postsService: PostService) { }
+  constructor(private postsService: PostService) {}
 
   @UseGuards(AuthGuard('jwt'))
   @Post()

@@ -12,7 +12,7 @@ export class UserService {
   constructor(
     @InjectModel('User') private readonly userModel: Model<UserInterface>,
     private jwtService: JwtService,
-  ) { }
+  ) {}
 
   async registerUser(data: RegisterDto): Promise<any> {
     const { name, password } = data;
@@ -49,6 +49,6 @@ export class UserService {
   }
 
   async removeById(id): Promise<void> {
-    this.userModel.findByIdAndRemove(id)
+    this.userModel.findByIdAndRemove(id);
   }
 }

@@ -3,79 +3,13 @@ import { User } from './user.schema';
 import * as mongoose from 'mongoose';
 import { Document } from 'mongoose';
 import { SocialInterface } from 'src/profile/interface/social.interface';
-import { EducationInterface } from 'src/profile/interface/education.interface';
-import { ExperienceInterface } from 'src/profile/interface/experience.interface';
+import { EducationInterface } from 'src/profile/education/interface/education.interface';
+import { ExperienceInterface } from 'src/profile/experience/interface/experience.interface';
+import { ExperienceSchema } from './experience.schema';
+import { EducationSchema } from './education.schema';
+import { SocialSchema } from './social.schema';
 
-export type UserDocument = Profile & Document;
-
-@Schema()
-class Experience {
-  @Prop({ required: true })
-  title: string;
-
-  @Prop({ required: true })
-  company: string;
-
-  @Prop()
-  location: string;
-
-  @Prop({ required: true })
-  from: Date;
-
-  @Prop()
-  to: Date;
-
-  @Prop({ default: false })
-  current: boolean;
-
-  @Prop()
-  description: string;
-}
-
-const ExperienceSchema = SchemaFactory.createForClass(Experience);
-
-@Schema()
-class Education {
-  @Prop({ required: true })
-  school: string;
-
-  @Prop({ required: true })
-  fieldofstudy: string;
-
-  @Prop({ required: true })
-  from: Date;
-
-  @Prop()
-  to: Date;
-
-  @Prop({ default: false })
-  current: boolean;
-
-  @Prop()
-  description: string;
-}
-
-const EducationSchema = SchemaFactory.createForClass(Education);
-
-@Schema()
-class Social {
-  @Prop()
-  youtube: string;
-
-  @Prop()
-  twitter: string;
-
-  @Prop()
-  facebook: string;
-
-  @Prop()
-  linkedin: string;
-
-  @Prop()
-  instagram: string;
-}
-
-const SocialSchema = SchemaFactory.createForClass(Social);
+export type ProfileDocument = Profile & Document;
 
 @Schema()
 export class Profile {

@@ -12,8 +12,8 @@ import { UserService } from 'src/user/user.service';
 export class PostService {
   constructor(
     @InjectModel('Post') private readonly postModel: Model<PostInterface>,
-    private readonly userService: UserService
-  ) { }
+    private readonly userService: UserService,
+  ) {}
 
   async create(id, data): Promise<PostInterface> {
     const { name, avatar } = await this.userService.findById(id);
@@ -36,7 +36,7 @@ export class PostService {
   async deleteById(userId, postId): Promise<void> {
     const post = await this.postModel.findById(postId);
     if (!post) {
-      //not working mongo error pass to client to implement 
+      //not working mongo error pass to client to implement
       throw new BadRequestException('Post not found');
     }
     if (post.user.toString() !== userId) {

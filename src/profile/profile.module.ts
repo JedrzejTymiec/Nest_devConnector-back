@@ -6,6 +6,8 @@ import { ProfileSchema } from 'src/schema/profile.schema';
 import { ConfigModule } from '@nestjs/config';
 import { PostModule } from 'src/post/post.module';
 import { UserModule } from 'src/user/user.module';
+import { ExperienceModule } from './experience/experience.module';
+import { EducationModule } from './education/education.module';
 
 @Module({
   imports: [
@@ -13,9 +15,12 @@ import { UserModule } from 'src/user/user.module';
     HttpModule,
     ConfigModule,
     UserModule,
-    PostModule
+    PostModule,
+    ExperienceModule,
+    EducationModule,
   ],
   controllers: [ProfileController],
   providers: [ProfileService],
+  exports: [ProfileService],
 })
-export class ProfileModule { }
+export class ProfileModule {}
