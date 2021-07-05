@@ -1,31 +1,38 @@
-import { Injectable, UnauthorizedException } from '@nestjs/common';
+import {
+  BadRequestException,
+  Injectable,
+  UnauthorizedException,
+} from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
-import { InjectModel } from '@nestjs/mongoose';
-import { Model } from 'mongoose';
-import { UserInterface } from 'src/user/interface/users.interface';
+import { UserInterface } from 'src/user/interface/user.interface';
 import * as bcrypt from 'bcrypt';
+import { UserService } from 'src/user/user.service';
 
 @Injectable()
 export class AuthService {
   constructor(
     private jwtService: JwtService,
-    @InjectModel('User') private readonly userModel: Model<UserInterface>,
+    private readonly userService: UserService,
   ) { }
 
   async validateUser({ email, password }): Promise<any> {
-    const user = await this.userModel.find({ email });
-    if (user.length > 0) {
-      const match = await bcrypt.compare(password, user[0].password);
-      if (match) {
-        const payload = { user: { id: user[0]._id } };
-        return { token: this.jwtService.sign(payload) };
-      }
-      throw new UnauthorizedException('Invalid Credentials');
+    const user = await this.userService.findByEmail(email);
+    if (!user) {
+      throw new BadRequestException('Invalid Credentials');
     }
-    throw new UnauthorizedException('Invalid Credentials');
+    const validPassword = await bcrypt.compare(password, user.password);
+    if (!validPassword) {
+      throw new BadRequestException('Invalid Credentials');
+    }
+    const token = this.jwtService.sign({
+      user: {
+        id: user._id,
+      },
+    });
+    return { token };
   }
 
   async getCurrentlyLogged(id: string): Promise<UserInterface> {
-    return this.userModel.findById(id).select('-password');
+    return this.userService.findById(id);
   }
 }

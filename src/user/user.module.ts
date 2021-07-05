@@ -1,6 +1,6 @@
 import { Module } from '@nestjs/common';
-import { UsersController } from './user.controller';
-import { UsersService } from './user.service';
+import { UserController } from './user.controller';
+import { UserService } from './user.service';
 import { JwtModule } from '@nestjs/jwt';
 import { MongooseModule } from '@nestjs/mongoose';
 import { UserSchema } from 'src/schema/user.schema';
@@ -14,15 +14,16 @@ import { ConfigModule, ConfigService } from '@nestjs/config';
         return {
           secret: configService.get('jwt.secret'),
           signOptions: {
-            expiresIn: '3h'
-          }
-        }
+            expiresIn: '3h',
+          },
+        };
       },
-      inject: [ConfigService]
+      inject: [ConfigService],
     }),
     MongooseModule.forFeature([{ name: 'User', schema: UserSchema }]),
   ],
-  controllers: [UsersController],
-  providers: [UsersService],
+  controllers: [UserController],
+  providers: [UserService],
+  exports: [UserService],
 })
-export class UsersModule { }
+export class UserModule { }

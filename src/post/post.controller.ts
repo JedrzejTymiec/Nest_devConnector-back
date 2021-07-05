@@ -9,15 +9,15 @@ import {
   Delete,
   Put,
 } from '@nestjs/common';
-import { PostsService } from './post.service';
+import { PostService } from './post.service';
 import { AuthGuard } from '@nestjs/passport';
 import { PostInterface } from 'src/post/interface/post.interface';
 import { PostDto } from 'src/post/dto/post.dto';
 import { CommentDto } from 'src/post/dto/comment.dto';
 
-@Controller('posts')
-export class PostsController {
-  constructor(private postsService: PostsService) { }
+@Controller('post')
+export class PostController {
+  constructor(private postsService: PostService) { }
 
   @UseGuards(AuthGuard('jwt'))
   @Post()

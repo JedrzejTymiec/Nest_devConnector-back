@@ -1,3 +1,3 @@
 export interface LikeInterface {
-    user: string;
+  user: string;
 }

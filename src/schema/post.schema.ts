@@ -1,7 +1,7 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import * as mongoose from 'mongoose';
 import { Document } from 'mongoose';
-import { UserInterface } from '../user/interface/users.interface';
+import { UserInterface } from '../user/interface/user.interface';
 import { CommentInterface } from 'src/post/interface/comment.interface';
 import { LikeInterface } from 'src/post/interface/like.interface';
 
@@ -10,7 +10,7 @@ export type PostDocument = Post & Document;
 Schema();
 class Like {
   @Prop({ type: mongoose.Schema.Types.ObjectId, ref: 'User' })
-  userId: UserInterface;
+  user: UserInterface;
 }
 
 const LikeSchema = SchemaFactory.createForClass(Like);
@@ -18,7 +18,7 @@ const LikeSchema = SchemaFactory.createForClass(Like);
 Schema();
 class Comment {
   @Prop({ type: mongoose.Schema.Types.ObjectId, ref: 'User' })
-  userId: UserInterface;
+  user: UserInterface;
 
   @Prop({ required: true })
   text: string;
@@ -38,7 +38,7 @@ const CommentSchema = SchemaFactory.createForClass(Comment);
 @Schema()
 export class Post {
   @Prop({ type: mongoose.Schema.Types.ObjectId, ref: 'User' })
-  userId: UserInterface;
+  user: UserInterface;
 
   @Prop({ required: true })
   text: string;

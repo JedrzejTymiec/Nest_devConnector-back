@@ -1,9 +1,9 @@
 import { Document, PopulatedDoc } from 'mongoose';
-import { UserInterface } from '../../user/interface/users.interface';
+import { UserInterface } from '../../user/interface/user.interface';
 import { LikeInterface } from './like.interface';
 
 export interface PostInterface {
-  userId: PopulatedDoc<UserInterface & Document>;
+  user: PopulatedDoc<UserInterface & Document>;
   text: string;
   name: string;
   avatar: string;

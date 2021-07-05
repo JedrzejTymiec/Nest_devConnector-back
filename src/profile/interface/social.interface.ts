@@ -1,3 +1,3 @@
 export interface SocialInterface {
-    [key: string]: string;
+  [key: string]: string;
 }

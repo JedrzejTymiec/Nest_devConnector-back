@@ -1,6 +1,6 @@
 import { Injectable, BadRequestException } from '@nestjs/common';
 import { RegisterDto } from 'src/user/dto/register.dto';
-import { UserInterface } from 'src/user/interface/users.interface';
+import { UserInterface } from 'src/user/interface/user.interface';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
 import * as gravatar from 'gravatar';
@@ -8,7 +8,7 @@ import * as bcrypt from 'bcrypt';
 import { JwtService } from '@nestjs/jwt';
 
 @Injectable()
-export class UsersService {
+export class UserService {
   constructor(
     @InjectModel('User') private readonly userModel: Model<UserInterface>,
     private jwtService: JwtService,
@@ -38,5 +38,17 @@ export class UsersService {
 
     const payload = { user: { id: user.id } };
     return { token: this.jwtService.sign(payload) };
+  }
+
+  async findByEmail(email): Promise<UserInterface> {
+    return this.userModel.findOne({ email });
+  }
+
+  async findById(id): Promise<UserInterface> {
+    return this.userModel.findById(id).select('-password');
+  }
+
+  async removeById(id): Promise<void> {
+    this.userModel.findByIdAndRemove(id)
   }
 }

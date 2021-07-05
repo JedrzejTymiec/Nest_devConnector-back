@@ -1,6 +1,6 @@
 export interface CommentInterface {
-    user: string;
-    text: string;
-    name: string;
-    avatar: string;
+  user: string;
+  text: string;
+  name: string;
+  avatar: string;
 }

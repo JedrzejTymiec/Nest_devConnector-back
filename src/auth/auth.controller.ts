@@ -8,7 +8,7 @@ import {
 } from '@nestjs/common';
 import { AuthService } from './auth.service';
 import { AuthGuard } from '@nestjs/passport';
-import { UserInterface } from 'src/user/interface/users.interface';
+import { UserInterface } from 'src/user/interface/user.interface';
 import { LoginDto } from './dto/login.dto';
 
 @Controller('auth')

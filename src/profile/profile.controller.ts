@@ -18,7 +18,7 @@ import { EducationDto } from 'src/profile/dto/education.dto';
 
 @Controller('profile')
 export class ProfileController {
-  constructor(private profileService: ProfileService) { }
+  constructor(private profileService: ProfileService) {}
 
   @UseGuards(AuthGuard('jwt'))
   @Post()

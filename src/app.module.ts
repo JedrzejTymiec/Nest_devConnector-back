@@ -1,9 +1,9 @@
 import { Module } from '@nestjs/common';
 import { AuthModule } from './auth/auth.module';
 import { MongooseModule } from '@nestjs/mongoose';
-import { UsersModule } from './user/user.module';
+import { UserModule } from './user/user.module';
 import { ProfileModule } from './profile/profile.module';
-import { PostsModule } from './post/post.module';
+import { PostModule } from './post/post.module';
 import { ConfigModule } from '@nestjs/config';
 import configuration from './config/configuration';
 import { ConfigService } from '@nestjs/config';
@@ -21,9 +21,9 @@ import { ConfigService } from '@nestjs/config';
       inject: [ConfigService],
     }),
     AuthModule,
-    UsersModule,
+    UserModule,
     ProfileModule,
-    PostsModule,
+    PostModule,
   ],
   controllers: [],
   providers: [],
