@@ -4,21 +4,18 @@ import { MongooseModule } from '@nestjs/mongoose';
 import { UserModule } from './user/user.module';
 import { ProfileModule } from './profile/profile.module';
 import { PostModule } from './post/post.module';
-import { ConfigModule } from '@nestjs/config';
-import configuration from './config/configuration';
-import { ConfigService } from '@nestjs/config';
+import { AppConfigModule } from './config/config.module';
+import { AppConfigService } from './config/config.service';
 
 @Module({
   imports: [
-    ConfigModule.forRoot({
-      load: [configuration],
-    }),
+    AppConfigModule,
     MongooseModule.forRootAsync({
-      imports: [ConfigModule],
-      useFactory: (configService: ConfigService) => ({
-        uri: configService.get<string>('mongo.uri'),
+      imports: [AppConfigModule],
+      useFactory: (config: AppConfigService) => ({
+        uri: config.mongoUri
       }),
-      inject: [ConfigService],
+      inject: [AppConfigService],
     }),
     AuthModule,
     UserModule,
@@ -28,4 +25,4 @@ import { ConfigService } from '@nestjs/config';
   controllers: [],
   providers: [],
 })
-export class AppModule {}
+export class AppModule { }

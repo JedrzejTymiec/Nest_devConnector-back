@@ -15,7 +15,7 @@ import { ExperienceService } from './experience.service';
 
 @Controller('profile/experience')
 export class ExperienceController {
-  constructor(private readonly experienceService: ExperienceService) { }
+  constructor(private readonly experienceService: ExperienceService) {}
 
   @UseGuards(AuthGuard('jwt'))
   @Post()

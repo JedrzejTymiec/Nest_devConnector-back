@@ -7,7 +7,6 @@ import {
   Get,
   Delete,
   Param,
-  Put,
 } from '@nestjs/common';
 import { ProfileService } from './profile.service';
 import { ProfileDataDto } from 'src/profile/dto/profileData.dto';
@@ -16,7 +15,7 @@ import { ProfileInterface } from 'src/profile/interface/profile.interface';
 
 @Controller('profile')
 export class ProfileController {
-  constructor(private profileService: ProfileService) { }
+  constructor(private profileService: ProfileService) {}
 
   @UseGuards(AuthGuard('jwt'))
   @Post()

@@ -3,7 +3,7 @@ import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
 import { ProfileInterface } from './interface/profile.interface';
 import { SocialInterface } from './interface/social.interface';
-import { ConfigService } from '@nestjs/config';
+import { AppConfigService } from 'src/config/config.service';
 import { UserService } from 'src/user/user.service';
 import { PostService } from 'src/post/post.service';
 
@@ -15,7 +15,7 @@ export class ProfileService {
     private readonly userService: UserService,
     private readonly postService: PostService,
     private readonly httpService: HttpService,
-    private readonly cofigService: ConfigService,
+    private readonly config: AppConfigService,
   ) { }
 
   async createUpdate(id, data): Promise<ProfileInterface> {
@@ -76,15 +76,13 @@ export class ProfileService {
   }
 
   async getGithubReposByUsername(username): Promise<any> {
-    const githubId = this.cofigService.get('github.id');
-    const githubSecret = this.cofigService.get('github.secret');
     const response = await this.httpService
       .get(`https://api.github.com/users/${username}/repos`, {
         params: {
           per_page: 5,
           sort: 'created:asc',
-          client_id: githubId,
-          client_secret: githubSecret,
+          client_id: this.config.githubId,
+          client_secret: this.config.githubSecret,
         },
       })
       .toPromise();

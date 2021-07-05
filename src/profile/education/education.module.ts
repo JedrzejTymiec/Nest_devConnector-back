@@ -8,4 +8,4 @@ import { EducationService } from './education.service';
   controllers: [EducationController],
   providers: [EducationService],
 })
-export class EducationModule { }
+export class EducationModule {}
