@@ -8,18 +8,19 @@ import {
   Param,
   Delete,
   Put,
+  UseFilters
 } from '@nestjs/common';
 import { PostService } from './post.service';
-import { AuthGuard } from '@nestjs/passport';
+import { JwtGuard } from 'src/common/guards/jwt-auth.guard';
 import { PostInterface } from 'src/post/interface/post.interface';
 import { PostDto } from 'src/post/dto/post.dto';
 import { CommentDto } from 'src/post/dto/comment.dto';
 
 @Controller('post')
 export class PostController {
-  constructor(private postsService: PostService) {}
+  constructor(private postsService: PostService) { }
 
-  @UseGuards(AuthGuard('jwt'))
+  @UseGuards(JwtGuard)
   @Post()
   async createPost(
     @Body() postDto: PostDto,
@@ -28,37 +29,37 @@ export class PostController {
     return this.postsService.create(req.user.id, postDto);
   }
 
-  @UseGuards(AuthGuard('jwt'))
+  @UseGuards(JwtGuard)
   @Get()
   async getPosts(): Promise<PostInterface[]> {
     return this.postsService.getAll();
   }
 
-  @UseGuards(AuthGuard('jwt'))
+  @UseGuards(JwtGuard)
   @Get(':post_id')
   async getPost(@Param('post_id') id: string): Promise<PostInterface> {
     return this.postsService.getById(id);
   }
 
-  @UseGuards(AuthGuard('jwt'))
+  @UseGuards(JwtGuard)
   @Delete(':post_id')
   async dletePost(@Param('post_id') id: string, @Request() req): Promise<void> {
     this.postsService.deleteById(req.user.id, id);
   }
 
-  @UseGuards(AuthGuard('jwt'))
+  @UseGuards(JwtGuard)
   @Put('like/:post_id')
   async likePost(@Request() req, @Param('post_id') id: string): Promise<any> {
     return this.postsService.likeById(req.user.id, id);
   }
 
-  @UseGuards(AuthGuard('jwt'))
+  @UseGuards(JwtGuard)
   @Put('unlike/:post_id')
   async unlikePost(@Request() req, @Param('post_id') id: string): Promise<any> {
     return this.postsService.unlikeById(req.user.id, id);
   }
 
-  @UseGuards(AuthGuard('jwt'))
+  @UseGuards(JwtGuard)
   @Post('comment/:post_id')
   async addComment(
     @Param('post_id') id: string,

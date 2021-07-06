@@ -8,16 +8,16 @@ import {
   Delete,
   Put,
 } from '@nestjs/common';
-import { AuthGuard } from '@nestjs/passport';
+import { JwtGuard } from 'src/common/guards/jwt-auth.guard';
 import { EducationDto } from './dto/education.dto';
 import { ProfileInterface } from '../interface/profile.interface';
 import { EducationService } from './education.service';
 
 @Controller('education')
 export class EducationController {
-  constructor(private readonly educationService: EducationService) {}
+  constructor(private readonly educationService: EducationService) { }
 
-  @UseGuards(AuthGuard('jwt'))
+  @UseGuards(JwtGuard)
   @Post('education')
   async add(
     @Body() eduDto: EducationDto,
@@ -26,7 +26,7 @@ export class EducationController {
     return this.educationService.addNew(req.user.id, eduDto);
   }
 
-  @UseGuards(AuthGuard('jwt'))
+  @UseGuards(JwtGuard)
   @Delete('education/:edu_id')
   async delete(
     @Param('edu_id') id: string,
@@ -35,7 +35,7 @@ export class EducationController {
     return this.educationService.deleteById(id, req.user.id);
   }
 
-  @UseGuards(AuthGuard('jwt'))
+  @UseGuards(JwtGuard)
   @Put('education/:edu_id')
   async update(
     @Body() eduDto: EducationDto,

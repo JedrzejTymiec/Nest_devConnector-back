@@ -8,16 +8,16 @@ import {
   Param,
   Put,
 } from '@nestjs/common';
-import { AuthGuard } from '@nestjs/passport';
+import { JwtGuard } from 'src/common/guards/jwt-auth.guard';
 import { ExperienceDto } from './dto/experience.dto';
 import { ProfileInterface } from '../interface/profile.interface';
 import { ExperienceService } from './experience.service';
 
 @Controller('profile/experience')
 export class ExperienceController {
-  constructor(private readonly experienceService: ExperienceService) {}
+  constructor(private readonly experienceService: ExperienceService) { }
 
-  @UseGuards(AuthGuard('jwt'))
+  @UseGuards(JwtGuard)
   @Post()
   async add(
     @Body() expDto: ExperienceDto,
@@ -26,7 +26,7 @@ export class ExperienceController {
     return this.experienceService.addNew(req.user.id, expDto);
   }
 
-  @UseGuards(AuthGuard('jwt'))
+  @UseGuards(JwtGuard)
   @Delete('/:exp_id')
   async delete(
     @Param('exp_id') id: string,
@@ -35,7 +35,7 @@ export class ExperienceController {
     return this.experienceService.deleteById(id, req.user.id);
   }
 
-  @UseGuards(AuthGuard('jwt'))
+  @UseGuards(JwtGuard)
   @Put('/:exp_id')
   async update(
     @Body() expDto: ExperienceDto,

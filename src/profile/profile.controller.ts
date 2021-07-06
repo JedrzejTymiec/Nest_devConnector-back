@@ -7,17 +7,18 @@ import {
   Get,
   Delete,
   Param,
+  UseFilters
 } from '@nestjs/common';
 import { ProfileService } from './profile.service';
 import { ProfileDataDto } from 'src/profile/dto/profileData.dto';
-import { AuthGuard } from '@nestjs/passport';
+import { JwtGuard } from 'src/common/guards/jwt-auth.guard';
 import { ProfileInterface } from 'src/profile/interface/profile.interface';
 
 @Controller('profile')
 export class ProfileController {
-  constructor(private profileService: ProfileService) {}
+  constructor(private profileService: ProfileService) { }
 
-  @UseGuards(AuthGuard('jwt'))
+  @UseGuards(JwtGuard)
   @Post()
   async createUpdate(
     @Body() profileDto: ProfileDataDto,
@@ -26,7 +27,7 @@ export class ProfileController {
     return this.profileService.createUpdate(req.user.id, profileDto);
   }
 
-  @UseGuards(AuthGuard('jwt'))
+  @UseGuards(JwtGuard)
   @Get('me')
   async currentProfile(@Request() req): Promise<ProfileInterface> {
     return this.profileService.getLogged(req.user.id);
@@ -42,7 +43,7 @@ export class ProfileController {
     return this.profileService.getAll();
   }
 
-  @UseGuards(AuthGuard('jwt'))
+  @UseGuards(JwtGuard)
   @Delete()
   async deleteProfile(@Request() req): Promise<void> {
     this.profileService.deleteProfileUserPosts(req.user.id);

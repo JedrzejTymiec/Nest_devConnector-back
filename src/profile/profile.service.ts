@@ -49,9 +49,9 @@ export class ProfileService {
     const profile = await this.profileModel
       .findOne({ user: id })
       .populate('user', ['name', 'avatar']);
-    if (!profile) {
-      throw new BadRequestException('There is no profile for this user');
-    }
+    // if (!profile) {
+    //   throw new BadRequestException('Profile not found');
+    // }
     return profile;
   }
 
